@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Generator - Vertex AI Studio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-magic"></i>
+                <h1>AI Image Studio</h1>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-link active">Generator</a>
+                <a href="#" class="nav-link">Gallery</a>
+                <a href="#" class="nav-link">About</a>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Generation Panel -->
+            <section class="generation-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-palette"></i> Create Your Vision</h2>
+                    <p>Transform your ideas into stunning visuals with AI</p>
+                </div>
+
+                <div class="generation-form">
+                    <!-- Prompt Input -->
+                    <div class="form-group">
+                        <label for="prompt">
+                            <i class="fas fa-lightbulb"></i>
+                            Describe your image
+                        </label>
+                        <textarea 
+                            id="prompt" 
+                            placeholder="A serene mountain landscape at sunset with dramatic clouds, ultra-realistic, 8k quality..."
+                            rows="4"
+                        ></textarea>
+                        <small>Be descriptive for better results</small>
+                    </div>
+
+                    <!-- Options Row -->
+                    <div class="options-row">
+                        <!-- Image Size -->
+                        <div class="form-group">
+                            <label for="size">
+                                <i class="fas fa-expand"></i>
+                                Size
+                            </label>
+                            <select id="size">
+                                <option value="1024x1024">Square (1024x1024)</option>
+                                <option value="1536x1024">Landscape (1536x1024)</option>
+                                <option value="1024x1536">Portrait (1024x1536)</option>
+                                <option value="1536x1536">Large Square (1536x1536)</option>
+                            </select>
+                        </div>
+
+                        <!-- Aspect Ratio -->
+                        <div class="form-group">
+                            <label for="aspectRatio">
+                                <i class="fas fa-ratio"></i>
+                                Aspect Ratio
+                            </label>
+                            <select id="aspectRatio">
+                                <option value="1:1">1:1 Square</option>
+                                <option value="16:9">16:9 Widescreen</option>
+                                <option value="9:16">9:16 Vertical</option>
+                                <option value="4:3">4:3 Standard</option>
+                            </select>
+                        </div>
+
+                        <!-- Style -->
+                        <div class="form-group">
+                            <label for="style">
+                                <i class="fas fa-paint-brush"></i>
+                                Style
+                            </label>
+                            <select id="style">
+                                <option value="photorealistic">Photorealistic</option>
+                                <option value="artistic">Artistic</option>
+                                <option value="anime">Anime</option>
+                                <option value="sketch">Sketch</option>
+                                <option value="digital-art">Digital Art</option>
+                                <option value="oil-painting">Oil Painting</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Options -->
+                    <div class="advanced-options">
+                        <button type="button" class="advanced-toggle" id="advancedToggle">
+                            <i class="fas fa-cog"></i>
+                            Advanced Options
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        
+                        <div class="advanced-content" id="advancedContent">
+                            <div class="advanced-grid">
+                                <div class="form-group">
+                                    <label for="negativePrompt">
+                                        <i class="fas fa-ban"></i>
+                                        Negative Prompt
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="negativePrompt" 
+                                        placeholder="blurry, low quality, distorted..."
+                                    />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="seed">
+                                        <i class="fas fa-seedling"></i>
+                                        Seed (optional)
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        id="seed" 
+                                        placeholder="Random"
+                                    />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="guidance">
+                                        <i class="fas fa-compass"></i>
+                                        Guidance Scale
+                                    </label>
+                                    <input 
+                                        type="range" 
+                                        id="guidance" 
+                                        min="1" 
+                                        max="20" 
+                                        value="7"
+                                    />
+                                    <span class="range-value">7</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="numImages">
+                                        <i class="fas fa-images"></i>
+                                        Number of Images
+                                    </label>
+                                    <select id="numImages">
+                                        <option value="1">1 Image</option>
+                                        <option value="2">2 Images</option>
+                                        <option value="4">4 Images</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generate Button -->
+                    <div class="generate-section">
+                        <button type="button" class="generate-btn" id="generateBtn">
+                            <i class="fas fa-magic"></i>
+                            <span class="btn-text">Generate Image</span>
+                            <div class="loading-spinner" id="loadingSpinner">
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                        
+                        <div class="generation-info">
+                            <small>
+                                <i class="fas fa-info-circle"></i>
+                                Generation typically takes 10-30 seconds
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Panel -->
+            <section class="results-panel" id="resultsPanel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-image"></i> Generated Images</h2>
+                    <div class="results-actions">
+                        <button type="button" class="action-btn" id="downloadAllBtn" disabled>
+                            <i class="fas fa-download"></i>
+                            Download All
+                        </button>
+                        <button type="button" class="action-btn" id="clearResultsBtn">
+                            <i class="fas fa-trash"></i>
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-grid" id="resultsGrid">
+                    <!-- Results will be populated here -->
+                    <div class="empty-state" id="emptyState">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Your generated images will appear here</h3>
+                        <p>Start by creating a prompt and clicking "Generate Image"</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 AI Image Studio. Powered by Vertex AI</p>
+                <div class="footer-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span class="toast-message"></span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
